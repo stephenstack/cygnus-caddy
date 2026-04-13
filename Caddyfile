@@ -46,3 +46,16 @@ devmailer.rconfig.com {
         protocols tls1.3
     }
 }
+
+# Portainer
+portainer.rconfig.com {
+    encode gzip
+    reverse_proxy 10.1.1.4:9443 {
+        transport http {
+            tls_insecure_skip_verify
+        }
+    }
+    tls {
+        protocols tls1.3
+    }
+}
