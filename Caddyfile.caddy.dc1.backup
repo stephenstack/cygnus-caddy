@@ -1,0 +1,122 @@
+{
+    email {$ACME_EMAIL}
+    acme_dns cloudflare {$CLOUDFLARE_API_TOKEN}
+    admin 0.0.0.0:2019 {
+            origins https://caddy.dc1.rconfig.com 127.0.0.1:2019 localhost:2019 194.36.65.210 http://0.0.0.0:2019
+    }
+    metrics
+}
+
+# Caddy Admin
+caddy.dc1.rconfig.com {
+    reverse_proxy 127.0.0.1:2019 {
+        header_up Origin "https://caddy.dc1.rconfig.com"
+    }
+    basic_auth {
+        admin $2a$14$R2CYWgqHr9p61z6gKqawPe3QZ0X0kJzeYK6fJmwL3m383muCczanK
+    }
+    tls {
+        protocols tls1.3
+    }
+}
+
+# Caddy Health Check
+ingress-check.rconfig.com {
+    respond "Caddy OK" 200
+    tls {
+        protocols tls1.3
+    }
+}
+
+# CRM
+crm.rconfig.com {
+    encode gzip
+    reverse_proxy 10.10.11.13:80
+    tls {
+        protocols tls1.3
+    }
+}
+
+# CRM WebSocket (Laravel Reverb)
+crm-ws.rconfig.com {
+    reverse_proxy 10.10.11.13:8080
+    tls {
+        protocols tls1.3
+    }
+}
+
+# v8 Demo
+v8demo.rconfig.com {
+    encode gzip
+    reverse_proxy 10.10.11.11:80
+    tls {
+        protocols tls1.3
+    }
+}
+
+# v8 Core Docs
+v8coredocs.rconfig.com {
+    encode gzip
+    reverse_proxy docker.dc1.rconfig.com:3001 {
+        health_uri      /
+        health_interval 30s
+        health_timeout  5s
+    }
+    tls {
+        protocols tls1.3
+    }
+}
+
+# Renewals
+renewals.rconfig.com {
+    encode gzip
+    reverse_proxy 10.10.11.16:80
+    tls {
+        protocols tls1.3
+    }
+}
+
+# v7 Landing
+v7-landing.rconfig.com, v7demo.rconfig.com {
+    root * /var/www/html/v7landing
+    file_server
+    encode gzip
+    tls {
+        protocols tls1.3
+    }
+}
+
+# CMS
+cms.rconfig.com {
+    encode gzip
+    reverse_proxy 10.10.11.16:80 {
+        health_uri      /
+        health_interval 30s
+        health_timeout  10s
+    }
+    tls {
+        protocols tls1.3
+    }
+}
+
+# www redirects → non-www
+www.rconfig.com {
+    redir https://rconfig.com{uri} permanent
+}
+
+www.rconfig.net {
+    redir https://rconfig.net{uri} permanent
+}
+
+# rconfig.com + rconfig.net main site
+rconfig.com, rconfig.net {
+    encode gzip
+    reverse_proxy docker.dc1.rconfig.com:3000 {
+        health_uri      /api/health
+        health_interval 30s
+        health_timeout  10s
+    }
+    tls {
+        protocols tls1.3
+    }
+}
