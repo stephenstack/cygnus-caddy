@@ -1,0 +1,13 @@
+{
+    email {$ACME_EMAIL}
+    acme_dns cloudflare {$CLOUDFLARE_API_TOKEN}
+}
+
+# Homepage
+polaris.rconfig.com {
+    encode gzip
+    reverse_proxy 10.1.1.116:3000
+    tls {
+        protocols tls1.3
+    }
+}
