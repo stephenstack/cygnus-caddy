@@ -1,6 +1,7 @@
 {
     email {$ACME_EMAIL}
     acme_dns cloudflare {$CLOUDFLARE_API_TOKEN}
+    admin 0.0.0.0:2019
 }
 
 # Homepage
@@ -16,6 +17,14 @@ homepage.rconfig.com {
 kuma.dc1.rconfig.com {
     encode gzip
     reverse_proxy 10.1.1.4:3001
+    tls {
+        protocols tls1.3
+    }
+}
+
+caddymanager.rconfig.com {
+    encode gzip
+    reverse_proxy 10.1.1.4:81
     tls {
         protocols tls1.3
     }
