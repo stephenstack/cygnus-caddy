@@ -5,6 +5,9 @@
             origins https://caddy.dc1.rconfig.com 127.0.0.1:2019 localhost:2019 194.36.65.210 http://0.0.0.0:2019
     }
     metrics
+    log default {
+        level ERROR
+    }
 }
 
 # Caddy Admin
