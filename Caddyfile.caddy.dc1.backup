@@ -99,17 +99,16 @@ cms.rconfig.com {
     }
 }
 
-# www redirects → non-www
-www.rconfig.com {
-    redir https://rconfig.com{uri} permanent
+# non-www redirects → www
+rconfig.com {
+    redir https://www.rconfig.com{uri} permanent
+}
+rconfig.net {
+    redir https://www.rconfig.net{uri} permanent
 }
 
-www.rconfig.net {
-    redir https://rconfig.net{uri} permanent
-}
-
-# rconfig.com + rconfig.net main site
-rconfig.com, rconfig.net {
+# www main site
+www.rconfig.com, www.rconfig.net {
     encode gzip
     reverse_proxy docker.dc1.rconfig.com:3000 {
         health_uri      /api/health
