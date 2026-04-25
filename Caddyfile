@@ -22,6 +22,22 @@ kuma.dc1.rconfig.com {
     }
 }
 
+multica.rconfig.com {
+    encode gzip
+    reverse_proxy 10.1.1.4:3002
+    tls {
+        protocols tls1.3
+    }
+}
+
+multica-api.rconfig.com {
+    encode gzip
+    reverse_proxy 10.1.1.4:8080
+    tls {
+        protocols tls1.3
+    }
+}
+
 caddymanager.rconfig.com {
     encode gzip
     reverse_proxy 10.1.1.4:81
