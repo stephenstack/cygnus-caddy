@@ -22,21 +22,6 @@ kuma.dc1.rconfig.com {
     }
 }
 
-multica.rconfig.com {
-    encode gzip
-    reverse_proxy 10.1.1.4:3002
-    tls {
-        protocols tls1.3
-    }
-}
-
-multica-api.rconfig.com {
-    encode gzip
-    reverse_proxy 10.1.1.4:8080
-    tls {
-        protocols tls1.3
-    }
-}
 
 caddymanager.rconfig.com {
     encode gzip
@@ -67,6 +52,17 @@ adguard.rconfig.com {
 devmailer.rconfig.com {
     encode gzip
     reverse_proxy 10.1.1.4:8025
+    tls {
+        protocols tls1.3
+    }
+}
+
+# rBackup
+rbackup.rconfig.com {
+    encode gzip
+    reverse_proxy http://rbackup-int.rconfig.com {
+        header_up Host {upstream_hostport}
+    }
     tls {
         protocols tls1.3
     }
